@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Bond Market Dashboard | BondStats</title>
+  <meta
+    name="description"
+    content="Track global bond market signals including sovereign yields, yield curve conditions, real yields, recession indicators and liquidity stress in one professional dashboard."
+  />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <main class="dashboard-shell">
+
+    <section class="hero-card">
+      <div class="hero-left">
+        <p class="eyebrow">BondStats Signature Tool</p>
+        <h1>Global Bond Market Dashboard</h1>
+        <p class="hero-text">
+          A unified dashboard for tracking sovereign yields, yield curve signals, recession conditions,
+          real yields and liquidity-sensitive bond market regimes.
+        </p>
+      </div>
+      <div class="hero-right">
+        <div class="regime-box">
+          <span class="regime-label">Current Regime</span>
+          <strong id="regimeValue" class="regime-value regime-tightening">Tightening</strong>
+          <p id="regimeSubtext" class="regime-subtext">Elevated real yields with mixed curve signals.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="kpi-grid">
+      <article class="kpi-card">
+        <span class="kpi-label">US 10Y Yield</span>
+        <strong id="us10yValue" class="kpi-value">4.12%</strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Germany 10Y Yield</span>
+        <strong id="de10yValue" class="kpi-value">2.41%</strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Japan 10Y Yield</span>
+        <strong id="jp10yValue" class="kpi-value">1.21%</strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">UK 10Y Yield</span>
+        <strong id="uk10yValue" class="kpi-value">4.05%</strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">10Y–2Y Spread</span>
+        <strong id="spread10y2yValue" class="kpi-value">-0.22 pp</strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">10Y–3M Spread</span>
+        <strong id="spread10y3mValue" class="kpi-value">-0.08 pp</strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Estimated Real Yield</span>
+        <strong id="realYieldValue" class="kpi-value">1.02%</strong>
+      </article>
+
+      <article class="kpi-card">
+        <span class="kpi-label">Recession Probability</span>
+        <strong id="recessionProbValue" class="kpi-value">38%</strong>
+      </article>
+    </section>
+
+    <section class="main-grid">
+      <section class="panel-card">
+        <div class="section-head">
+          <h2>Dashboard Inputs</h2>
+          <p>Adjust market assumptions and watch how the dashboard regime changes.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="us10yInput">US 10Y Yield (%)</label>
+            <input id="us10yInput" type="number" step="0.01" value="4.12" />
+          </div>
+
+          <div class="field">
+            <label for="us2yInput">US 2Y Yield (%)</label>
+            <input id="us2yInput" type="number" step="0.01" value="4.34" />
+          </div>
+
+          <div class="field">
+            <label for="us3mInput">US 3M Yield (%)</label>
+            <input id="us3mInput" type="number" step="0.01" value="4.20" />
+          </div>
+
+          <div class="field">
+            <label for="inflationInput">Inflation Rate (%)</label>
+            <input id="inflationInput" type="number" step="0.01" value="3.10" />
+          </div>
+
+          <div class="field">
+            <label for="de10yInput">Germany 10Y Yield (%)</label>
+            <input id="de10yInput" type="number" step="0.01" value="2.41" />
+          </div>
+
+          <div class="field">
+            <label for="jp10yInput">Japan 10Y Yield (%)</label>
+            <input id="jp10yInput" type="number" step="0.01" value="1.21" />
+          </div>
+
+          <div class="field">
+            <label for="uk10yInput">UK 10Y Yield (%)</label>
+            <input id="uk10yInput" type="number" step="0.01" value="4.05" />
+          </div>
+
+          <div class="field">
+            <label for="liquidityStressInput">Liquidity Stress Score (0–100)</label>
+            <input id="liquidityStressInput" type="number" step="1" min="0" max="100" value="42" />
+          </div>
+
+          <div class="field">
+            <label for="baselDemandInput">Basel Demand Score (0–100)</label>
+            <input id="baselDemandInput" type="number" step="1" min="0" max="100" value="58" />
+          </div>
+
+          <div class="field">
+            <label for="labelInput">Optional Dashboard Label</label>
+            <input id="labelInput" type="text" placeholder="e.g. Current Macro Snapshot" />
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="updateBtn" class="primary-btn">Update Dashboard</button>
+          <button id="resetBtn" class="secondary-btn">Reset</button>
+        </div>
+      </section>
+
+      <section class="panel-card">
+        <div class="section-head">
+          <h2>Current Interpretation</h2>
+          <p>Machine-generated summary based on the current market regime and signal mix.</p>
+        </div>
+
+        <div class="interpretation-box">
+          <p id="interpretationText">
+            Current bond market conditions indicate a tightening environment, driven by elevated real yields and only modest normalization in the curve.
+          </p>
+        </div>
+
+        <div class="signal-list">
+          <div class="signal-row">
+            <span>Curve Status</span>
+            <strong id="curveStatusValue" class="signal-value signal-flat">Flat / Mildly Inverted</strong>
+          </div>
+          <div class="signal-row">
+            <span>Liquidity Signal</span>
+            <strong id="liquidityStatusValue" class="signal-value signal-moderate">Moderate Stress</strong>
+          </div>
+          <div class="signal-row">
+            <span>Basel Demand Support</span>
+            <strong id="baselStatusValue" class="signal-value signal-positive">Supportive</strong>
+          </div>
+          <div class="signal-row">
+            <span>Macro Tone</span>
+            <strong id="macroToneValue" class="signal-value signal-caution">Cautious</strong>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="chart-grid">
+      <section class="chart-card">
+        <div class="section-head">
+          <h2>Sovereign Yield Snapshot</h2>
+          <p>Compare major developed-market 10-year government bond yields.</p>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="yieldSnapshotChart"></canvas>
+        </div>
+      </section>
+
+      <section class="chart-card">
+        <div class="section-head">
+          <h2>Signal Composition</h2>
+          <p>Visual view of the dashboard’s core signal blocks.</p>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="signalCompositionChart"></canvas>
+        </div>
+      </section>
+    </section>
+
+    <section class="table-card">
+      <div class="section-head">
+        <h2>Scenario Regime Matrix</h2>
+        <p>How the bond market regime shifts under different combinations of real yields and curve conditions.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Real Yield</th>
+              <th>10Y–2Y</th>
+              <th>Liquidity Stress</th>
+              <th>Regime</th>
+            </tr>
+          </thead>
+          <tbody id="scenarioTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="insight-grid">
+      <article class="info-card">
+        <h3>What This Dashboard Does</h3>
+        <p>
+          The dashboard combines major sovereign yields, yield curve spreads, real yields, recession-style indicators
+          and liquidity-sensitive variables into a single market regime framework.
+        </p>
+      </article>
+
+      <article class="info-card">
+        <h3>Why It Matters</h3>
+        <p>
+          Bond markets often signal shifts in macro conditions before they become obvious elsewhere.
+          This dashboard is designed to compress those signals into a readable market structure view.
+        </p>
+      </article>
+    </section>
+
+    <section class="methodology-card">
+      <div class="section-head">
+        <h2>Methodology</h2>
+      </div>
+
+      <p>
+        The Global Bond Market Dashboard combines simplified bond-market indicators into an internal BondStats regime classification model.
+      </p>
+
+      <p>
+        Inputs include sovereign yields, yield curve spreads, inflation-adjusted yields, recession-style indicators,
+        liquidity stress assumptions and Basel-related demand support.
+      </p>
+
+      <p class="disclaimer">
+        This BondStats dashboard is provided for informational and educational purposes only. It is a simplified analytical framework and does not represent investment advice, regulatory analysis or an official economic forecast.
+      </p>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
